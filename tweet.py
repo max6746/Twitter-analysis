@@ -23,7 +23,7 @@ def main():
     #Create list of dict of tweets
     tweet_list = []
     for tweet in tweets:
-        tweet_dict = {'Tweet':tweet.text, 'Date': tweet.created_at.date().strftime("%d-%m-%Y"), 'Time': tweet.created_at.time().strftime("%H:%M:%S"), 'Favourite Count': tweet.favorite_count}
+        tweet_dict = {'Tweet':tweet.text, 'Date': tweet.created_at.date().strftime("%m-%d-%Y"), 'Time': tweet.created_at.time().strftime("%H:%M:%S"), 'Favourite Count': tweet.favorite_count}
         tweet_list.append(tweet_dict)
 
     #Write tweets to csv
