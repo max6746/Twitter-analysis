@@ -4,32 +4,43 @@ import datetime
 
 def get_stock(date, stock_file):
     stock_df = pandas.read_csv(stock_file)
+    stock_dic = stock_df.set_index('Date')['Close'].to_dict()
     for ind in stock_df.index:
         if stock_df['Date'][ind]:
             #try previous stock
             try:
-                pre = stock_df['Date'][ind-1]
+                pre_date = stock_df['Date'][ind-1]
+                pre_stock = stock_dic[pre_date]
             except:
-                pre = 'null'
+                pre_date = 'null'
+                pre_stock = 'null'
             #try with curr date
-            curr = stock_df['Date'][ind]
+            curr_date = stock_df['Date'][ind]
+            curr_stock = stock_dic[curr_date]
             #try next stock
             try:
-                post = stock_df['Date'][ind+1]
+                post_date = stock_df['Date'][ind+1]
+                post_stock = stock_dic[post_date]
             except:
-                post = 'null'
+                post_date = 'null'
+                post_stock = 'null'
         else:
             date_obj = datetime.datetime.strptime(date, "%d-%m-%Y").date()
             cmp_date = datetime.datetime.strptime(stock_df['Date'][ind], "%d-%m-%Y").date()
             if date_obj < cmp_date:
                 try:
-                    pre = stock_df['Date'][ind-1]
+                    pre_date = stock_df['Date'][ind-1]
+                    pre_stock = stock_dic[pre_date]
                 except:
-                    pre = 'null'
+                    pre_date = 'null'
+                    pre_stock = 'null'
                 #try with curr date
-                curr = 'null'
-                post = stock_df['Date'][ind]
-    return({"pre":pre, "curr": curr, "post": post})    
+                curr_date = 'null'
+                curr_stock = 'null'
+                
+                post_date = stock_df['Date'][ind]
+                post_stock = stock_dic[post_date]
+    return({pre_date:pre_stock, curr_date: curr_stock, post_date: post_stock})    
 
 def write_to_csv(date, tweet_list, fav_list, time_list, stock_file):
     stock_dict = get_stock(date, stock_file)
