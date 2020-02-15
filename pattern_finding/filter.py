@@ -65,7 +65,7 @@ def cleanup(tweet, stock):
 
     #sort dates
     unique_dates.sort()
-
+    open('analysis.csv', 'w').close()
     for date in unique_dates:
         print(date)
         tweet_list = []
