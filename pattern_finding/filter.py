@@ -44,12 +44,17 @@ def get_stock(date, stock_file):
 
 def write_to_csv(date, tweet_list, fav_list, time_list, stock_file):
     stock_dict = get_stock(date, stock_file)
-    # with open('tweets.csv', mode='w') as csv_file:
-    #     fieldnames = ['Tweet', 'Date', 'Time', 'Favourite Count']
-    #     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    #     writer.writeheader()
-    #     for tweet in tweet_list:
-    #         writer.writerow({'Tweet': tweet['Tweet'], 'Date': tweet['Date'], 'Time': tweet['Time'], 'Favourite Count': tweet['Favourite Count']})    
+    with open('analysis.csv', mode='a') as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(['date', date])
+        writer.writerow([])
+        for date_, stock_ in stock_dict.items():
+            writer.writerow([date_, stock_])
+        writer.writerow([])
+        for i in range(len(tweet_list)):
+            writer.writerow([tweet_list[i], fav_list[i], time_list[i]])
+        writer.writerow([])
+        writer.writerow([])
 
 
 def cleanup(tweet, stock):
@@ -62,6 +67,7 @@ def cleanup(tweet, stock):
     unique_dates.sort()
 
     for date in unique_dates:
+        print(date)
         tweet_list = []
         fav_list = []
         time_list = []
@@ -70,5 +76,6 @@ def cleanup(tweet, stock):
                 tweet_list.append(row['Tweet'])
                 fav_list.append(row['Favourite Count'])
                 time_list.append(row['Time'])
-        write_to_csv(date, tweet_list, fav_list, time_list, stock_file)
+        write_to_csv(date, tweet_list, fav_list, time_list, stock)
 
+cleanup('../tweets.csv', '../tesla_stocks.csv')
