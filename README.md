@@ -1,5 +1,8 @@
 # Twitter-analysis
 
+## 17/2/20
+> Analytics script fixed - Manual data collected
+
 ## 2/2/20
 > Fetching tweets locally to a csv file.
 > Handle tweet encoding.
