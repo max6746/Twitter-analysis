@@ -6,7 +6,9 @@ def get_stock(date, stock_file):
     stock_df = pandas.read_csv(stock_file)
     stock_dic = stock_df.set_index('Date')['Close'].to_dict()
     for ind in stock_df.index:
-        if stock_df['Date'][ind]:
+        date_ = datetime.datetime.strptime(date, "%d-%m-%Y").date()
+        cmp_date_ = datetime.datetime.strptime(stock_df['Date'][ind], "%d-%m-%Y").date()
+        if cmp_date_ == date_:
             #try previous stock
             try:
                 pre_date = stock_df['Date'][ind-1]
@@ -24,6 +26,7 @@ def get_stock(date, stock_file):
             except:
                 post_date = 'null'
                 post_stock = 'null'
+            break
         else:
             date_obj = datetime.datetime.strptime(date, "%d-%m-%Y").date()
             cmp_date = datetime.datetime.strptime(stock_df['Date'][ind], "%d-%m-%Y").date()
@@ -67,7 +70,6 @@ def cleanup(tweet, stock):
     unique_dates.sort()
     open('analysis.csv', 'w').close()
     for date in unique_dates:
-        print(date)
         tweet_list = []
         fav_list = []
         time_list = []
